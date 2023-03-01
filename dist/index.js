@@ -47,7 +47,7 @@ function sync(name) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => {
             const url = genSyncUrl(name);
-            core.debug(`sync url: ${url}`);
+            core.info(`sync url: ${url}`);
             (0, child_process_1.exec)(`curl -X PUT ${url}`, (err, stdout, stderr) => {
                 if (err) {
                     core.error(err);
