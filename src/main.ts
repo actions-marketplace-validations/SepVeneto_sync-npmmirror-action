@@ -10,7 +10,7 @@ function genSyncUrl(name: string): string {
 export async function sync(name: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     const url = genSyncUrl(name)
-    core.debug(`sync url: ${url}`)
+    core.info(`sync url: ${url}`)
     exec(`curl -X PUT ${url}`, (err, stdout, stderr) => {
       if (err) {
         core.error(err)
