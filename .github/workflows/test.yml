@@ -25,5 +25,5 @@ jobs:
       - uses: ./
         with:
           name: |
-            '@sepveneto/basic-comp'
-            '@sepveneto/free-dom'
+            @sepveneto/basic-comp
+            @sepveneto/free-dom
