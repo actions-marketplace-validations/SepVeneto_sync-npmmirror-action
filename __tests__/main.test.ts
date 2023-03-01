@@ -9,9 +9,17 @@ test('with no name', async () => {
   expect(warningSpy).toHaveBeenCalledWith('without name, change to use the name from package.json')
 })
 
-test('set name', () => {
+test('set name', async () => {
   process.env['INPUT_NAME'] = 'foo'
   const debugSpy = jest.spyOn(core, 'debug')
-  main.run()
+  await main.run()
   expect(debugSpy).toHaveBeenCalledWith('package name: foo')
+})
+
+test('set multiple name', async () => {
+  process.env['INPUT_NAME'] = 'foo\nbar'
+  const debugSpy = jest.spyOn(core, 'debug')
+  await main.run()
+  expect(debugSpy).toHaveBeenNthCalledWith(1, 'package name: foo')
+  expect(debugSpy).toHaveBeenNthCalledWith(2, 'package name: bar')
 })

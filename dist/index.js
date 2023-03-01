@@ -45,6 +45,7 @@ function genSyncUrl(name) {
 }
 function sync(name) {
     return __awaiter(this, void 0, void 0, function* () {
+        core.debug(`package name: ${name}`);
         return new Promise((resolve, reject) => {
             const url = genSyncUrl(name);
             core.info(`sync url: ${url}`);
@@ -65,16 +66,15 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
-            let name = core.getInput('name');
-            if (!name) {
+            let names = core.getMultilineInput('name');
+            if (!names || names.length === 0) {
                 core.warning(`without name, change to use the name from package.json`);
                 const src = path.resolve(process.cwd(), 'package.json');
                 core.debug(`project root: ${src}`);
                 const packageJson = JSON.parse((0, fs_1.readFileSync)(src).toString());
-                name = packageJson['name'];
+                names = [packageJson['name']];
             }
-            core.debug(`package name: ${name}`);
-            yield sync(name);
+            yield Promise.all(names.map(sync));
         }
         catch (error) {
             if (error instanceof Error)

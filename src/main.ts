@@ -8,6 +8,7 @@ function genSyncUrl(name: string): string {
 }
 
 export async function sync(name: string): Promise<boolean> {
+  core.debug(`package name: ${name}`)
   return new Promise((resolve, reject) => {
     const url = genSyncUrl(name)
     core.info(`sync url: ${url}`)
@@ -26,16 +27,15 @@ export async function sync(name: string): Promise<boolean> {
 export async function run(): Promise<void> {
   try {
     // core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
-    let name = core.getInput('name')
-    if (!name) {
+    let names = core.getMultilineInput('name')
+    if (!names || names.length === 0) {
       core.warning(`without name, change to use the name from package.json`)
       const src = path.resolve(process.cwd(), 'package.json')
       core.debug(`project root: ${src}`)
       const packageJson = JSON.parse(readFileSync(src).toString())
-      name = packageJson['name']
+      names = [packageJson['name']]
     }
-    core.debug(`package name: ${name}`)
-    await sync(name)
+    await Promise.all(names.map(sync))
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
