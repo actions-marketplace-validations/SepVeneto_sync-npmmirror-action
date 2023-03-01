@@ -25,5 +25,5 @@ jobs:
       - uses: ./
         with:
           name: |
-            'foo'
-            'bar'
+            '@sepveneto/basic-comp'
+            '@sepveneto/free-dom'
