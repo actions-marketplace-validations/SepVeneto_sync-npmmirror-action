@@ -1,6 +1,6 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'sync-npmmirror-action'
+description: 'auto sync packages from npm to npmmirror'
+author: 'SepVeneto'
 inputs:
   name: # change this
     required: false
